@@ -39,7 +39,7 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 
 ## 相容條件
 
-最低需求：**Home Assistant Core 2026.6.0 以上**。已依 [2026.6.0 官方原始碼](https://github.com/home-assistant/core/blob/2026.6.0/homeassistant/components/humidifier/__init__.py) 核對 Humidifier、濕度步進、Config Flow、Options Flow、Registry 與事件追蹤 API。
+最低需求：**Home Assistant Core 2026.6.0 以上**。
 
 同一台 ESPHome 裝置下，至少要有三個已啟用、可用的實體：
 
@@ -60,8 +60,8 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 ### 方法一：HACS Custom Repository
 
 1. 先安裝並設定 HACS。
-2. 在 HACS 右上角選單開啟「自訂儲存庫」。
-3. 輸入以下 repository URL，類型選擇「整合」：
+2. 在 HACS 右上角選單開啟「Custom repositories」。
+3. repository欄位輸入以下URL，Type選擇「Intergration」後按 ADD：
 
    ```text
    https://github.com/xangin/hacs-esphome-dehumidifier-helper
