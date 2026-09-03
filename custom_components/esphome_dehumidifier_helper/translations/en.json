@@ -23,13 +23,21 @@
       "confirm": {
         "title": "Detected entities",
         "description": "Power: {power_entity_id}\nCurrent humidity: {humidity_entity_id}\nTarget humidity: {target_humidity_entity_id}\nOperation mode: {mode_entity_id}\nFan speed: {fan_entity_id}\n\nSelect Submit to finish.\n“—” means not used. Fan speed remains a separate ESPHome control.",
-        "data": {}
+        "data": {
+          "mode_names": "Mode display names"
+        },
+        "data_description": {
+          "mode_names": "Each field represents an original device mode. Enter the name to display, or leave it blank to use the original name. Names must be unique."
+        }
       }
     },
     "error": {
       "required_entity": "This entity is required.",
       "invalid_entity": "Select an available ESPHome entity on this device.",
-      "duplicate_entity": "One entity cannot provide two functions."
+      "duplicate_entity": "One entity cannot provide two functions.",
+      "invalid_mode_names": "Enter a text name for each mode.",
+      "duplicate_mode_names": "Use a different display name for each mode.",
+      "mode_options_changed": "The device mode options have changed. Please check their names again."
     },
     "abort": {
       "already_configured": "This ESPHome dehumidifier is already configured.",
@@ -41,7 +49,7 @@
     "step": {
       "init": {
         "title": "Entity mapping",
-        "description": "Change an incorrect entity mapping. Leave an optional field empty to disable that feature.",
+        "description": "Change the entity mappings. Leave optional fields empty to disable them. If an operation mode is selected, the next page lets you name its modes.",
         "data": {
           "power_entity_id": "Power",
           "humidity_entity_id": "Current humidity",
@@ -49,12 +57,22 @@
           "mode_entity_id": "Operation mode (optional)",
           "fan_entity_id": "Fan speed (optional)"
         }
+      },
+      "mode_names": {
+        "title": "Customize mode names",
+        "description": "Each field represents an original device mode. Enter the name to display, or leave it blank to use the original name. Names must be unique.",
+        "data": {
+          "mode_names": "Mode display names"
+        }
       }
     },
     "error": {
       "required_entity": "This entity is required.",
       "invalid_entity": "Select an available ESPHome entity on this device.",
-      "duplicate_entity": "One entity cannot provide two functions."
+      "duplicate_entity": "One entity cannot provide two functions.",
+      "invalid_mode_names": "Enter a text name for each mode.",
+      "duplicate_mode_names": "Use a different display name for each mode.",
+      "mode_options_changed": "The device mode options have changed. Please check their names again."
     },
     "abort": {
       "device_unavailable": "The selected ESPHome device is no longer available."

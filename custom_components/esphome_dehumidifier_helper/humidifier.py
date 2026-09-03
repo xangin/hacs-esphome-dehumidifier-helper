@@ -40,6 +40,7 @@ from .const import (
     REQUIRED_ROLES,
     STATE_ROLES,
 )
+from .modes import source_mode_names, unique_mode_names
 from .values import humidity_limits, humidity_value, valid_humidity_setting
 
 _LOGGER = logging.getLogger(__name__)
@@ -134,18 +135,18 @@ class ESPHomeDehumidifier(HumidifierEntity):
     def available_modes(self) -> list[str] | None:
         if not self.supported_features:
             return None
-        state = self._source_state(CONF_MODE)
-        options = state.attributes.get("options") if state else None
-        if not isinstance(options, (list, tuple)):
-            return []
-        return [option for option in options if isinstance(option, str)]
+        return list(self._mode_names.values())
+
+    @property
+    def _mode_names(self) -> dict[str, str]:
+        return unique_mode_names(source_mode_names(self.hass, effective_data(self._entry)))
 
     @property
     def mode(self) -> str | None:
         state = self._source_state(CONF_MODE)
         if state is None or state.state in (STATE_UNKNOWN, STATE_UNAVAILABLE):
             return None
-        return state.state
+        return self._mode_names.get(state.state, state.state)
 
     @property
     def action(self) -> HumidifierAction | None:
@@ -255,6 +256,9 @@ class ESPHomeDehumidifier(HumidifierEntity):
         await self._call_source(CONF_TARGET, "number", "set_value", {"value": humidity})
 
     async def async_set_mode(self, mode: str) -> None:
-        if mode not in (self.available_modes or []):
+        source_option = next(
+            (option for option, name in self._mode_names.items() if name == mode), None
+        )
+        if source_option is None:
             raise ServiceValidationError(translation_domain=DOMAIN, translation_key="invalid_mode")
-        await self._call_source(CONF_MODE, "select", "select_option", {"option": mode})
+        await self._call_source(CONF_MODE, "select", "select_option", {"option": source_option})

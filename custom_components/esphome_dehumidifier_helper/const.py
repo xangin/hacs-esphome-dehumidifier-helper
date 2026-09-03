@@ -16,6 +16,7 @@ CONF_POWER: Final = "power_entity_id"
 CONF_HUMIDITY: Final = "humidity_entity_id"
 CONF_TARGET: Final = "target_humidity_entity_id"
 CONF_MODE: Final = "mode_entity_id"
+CONF_MODE_NAMES: Final = "mode_names"
 CONF_FAN: Final = "fan_entity_id"
 CONF_SOURCE_REFS: Final = "source_refs"
 
@@ -43,3 +44,11 @@ ROLE_NAMES: Final = {
 
 FALLBACK_MIN_HUMIDITY: Final = 40.0
 FALLBACK_MAX_HUMIDITY: Final = 80.0
+
+# Applied to known Hitachi firmware, or a select offering all four ST01 modes.
+HITACHI_MODE_NAMES: Final = {
+    "eco": "舒適節電",
+    "normal": "自訂濕度",
+    "boost": "快速乾衣",
+    "home": "低濕乾燥",
+}

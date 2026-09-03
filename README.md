@@ -27,7 +27,7 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 - 建立官方 `HumidifierEntity`，裝置類別為 `dehumidifier`。
 - 開關電源、顯示目前濕度、查看和設定目標濕度。
 - 自動讀取來源 number 的濕度上下限與步進值。
-- 有模式 select 時，直接使用它的模式選項，包含中文名稱。
+- 有模式 select 時，自動讀取模式選項，支援日立預設中文名稱與逐項自訂名稱。
 - GUI 選擇裝置後自動辨識來源；只有無法判斷的項目才需要手動選擇。
 - 提供選項頁，之後可以修正實體對應，無需刪除整合重建。
 - 支援多台 ESPHome 除濕機、裝置名稱的 MAC suffix、來源實體改名與整合重新載入。
@@ -95,6 +95,7 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
    - 能自動辨識時，顯示「已偵測到以下實體」，檢查後提交即可。
    - 有缺少或多個候選時，顯示需要手動選擇的欄位。
    - 模式和風量可留空；確認頁的「—」表示未使用該項來源。
+   - 已選擇模式且讀取得到選項時，確認頁會列出「模式顯示名稱」，可直接接受預填值或逐項修改。
 6. 完成後，回到原本的 ESPHome 裝置頁，找到新增的除濕機實體。
 
 實際 `entity_id` 由 Home Assistant 依名稱、語系與現有實體產生，不固定為某個字串。每台除濕機各新增一次整合，設定彼此獨立。
@@ -112,6 +113,35 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 開啟 **設定 → 裝置與服務 → ESPHome Dehumidifier Helper → 該裝置的設定／選項**，即可重新指定電源、目前濕度、設定濕度、模式與風量。清空選填欄位可停用該綁定，提交後整合自動重新載入。
 
 來源 entity_id 或顯示名稱變更時，助手會透過保存的 Registry 身分重新追蹤，通常不需重新設定。
+
+### 自訂運轉模式名稱
+
+有選擇「運轉模式」實體時，助手會讀取該實體的所有模式選項，為每個選項產生一個名稱欄位。例如原始值為 `eco`，欄位標示 `eco`，內容可填「舒適節電」或你喜歡的名稱，不需要編寫 YAML。
+
+日立預設對應如下：
+
+| ESPHome 原始模式 | 除濕機顯示名稱 |
+| --- | --- |
+| `eco` | 舒適節電 |
+| `normal` | 自訂濕度 |
+| `boost` | 快速乾衣 |
+| `home` | 低濕乾燥 |
+
+已知日立 firmware metadata，或模式選項包含完整的 `eco`、`normal`、`boost`、`home` 四個值時，會套用這組預填名稱。其他裝置預填原始模式名稱，也能逐項自訂；新增的其他模式同樣會列出。
+
+日後要修改名稱：
+
+1. 開啟 **設定 → 裝置與服務 → ESPHome Dehumidifier Helper → 該裝置的設定／選項**。
+2. 確認「運轉模式」已選擇正確的來源實體，再提交。
+3. 在「自訂運轉模式名稱」逐項填寫名稱，提交後自動套用。
+
+欄位留空會使用該模式的原始值。各模式的顯示名稱不可重複，避免控制時無法判斷要選哪個模式。未選擇模式，或來源暫時沒有提供選項時，會略過名稱頁；裝置恢復後可再進入設定。
+
+除濕機的目前模式與模式選單都使用這些名稱。選擇「快速乾衣」時，助手會向 ESPHome 送出原始值 `boost`，並等待來源回報狀態；原本 ESPHome select 的選項不會被修改。使用 HA 的 `humidifier.set_mode` 動作時，也請選擇除濕機目前顯示的名稱。
+
+名稱設定每台裝置各自保存，來源實體重新命名與整合重新載入後仍會保留。改選另一個模式實體時，會重新讀取並預填該來源的選項。如果 firmware 日後新增模式造成名稱重複，助手會暫時使用原始模式名稱，直到你在選項頁修正。
+
+此功能使用 HA 官方的 [自訂 humidifier 模式](https://developers.home-assistant.io/docs/core/entity/humidifier/#modes) 與 [欄位式 Object selector](https://www.home-assistant.io/docs/blueprint/selectors/#object-selector)，最低需求維持 Core 2026.6.0。
 
 ## 如何自動辨識
 
@@ -138,7 +168,7 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 | GitHub repository | `xangin/hacs-esphome-dehumidifier-helper` |
 | 整合名稱 | ESPHome Dehumidifier Helper |
 | HA domain | `esphome_dehumidifier_helper` |
-| 目前版本 | `1.1.1` |
+| 目前版本 | `1.2.0` |
 | 最低 Home Assistant Core | `2026.6.0` |
 
 ### 找不到裝置或無法完成設定？

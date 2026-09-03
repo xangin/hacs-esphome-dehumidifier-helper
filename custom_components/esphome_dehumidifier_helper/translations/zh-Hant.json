@@ -23,13 +23,21 @@
       "confirm": {
         "title": "已偵測到以下實體",
         "description": "電源：{power_entity_id}\n目前濕度：{humidity_entity_id}\n設定濕度：{target_humidity_entity_id}\n運轉模式：{mode_entity_id}\n風量：{fan_entity_id}\n\n請按「提交」完成設定。\n「—」表示此項功能未使用。風量會保留原本的控制實體。",
-        "data": {}
+        "data": {
+          "mode_names": "模式顯示名稱"
+        },
+        "data_description": {
+          "mode_names": "每個欄位代表裝置的一個原始模式，可輸入想顯示的名稱。留空會使用原始名稱，各模式名稱不可重複。"
+        }
       }
     },
     "error": {
       "required_entity": "此實體為必要項目。",
       "invalid_entity": "請選擇這台裝置目前可用的 ESPHome 實體。",
-      "duplicate_entity": "同一個實體不能同時提供兩項功能。"
+      "duplicate_entity": "同一個實體不能同時提供兩項功能。",
+      "invalid_mode_names": "請為每個模式輸入文字名稱。",
+      "duplicate_mode_names": "模式名稱不可重複，請為每個模式使用不同名稱。",
+      "mode_options_changed": "裝置的模式選項已變更，請重新確認名稱。"
     },
     "abort": {
       "already_configured": "這台 ESPHome 除濕機已經加入。",
@@ -41,7 +49,7 @@
     "step": {
       "init": {
         "title": "實體對應",
-        "description": "可在此修正錯誤的實體對應。選填欄位留空會停用該功能。",
+        "description": "可在此修正實體對應。選填欄位留空會停用該功能；選擇運轉模式後，下一頁可自訂各模式的顯示名稱。",
         "data": {
           "power_entity_id": "電源",
           "humidity_entity_id": "目前濕度",
@@ -49,12 +57,22 @@
           "mode_entity_id": "運轉模式（選填）",
           "fan_entity_id": "風量（選填）"
         }
+      },
+      "mode_names": {
+        "title": "自訂運轉模式名稱",
+        "description": "每個欄位代表裝置的一個原始模式，可輸入想顯示的名稱。留空會使用原始名稱，各模式名稱不可重複。",
+        "data": {
+          "mode_names": "模式顯示名稱"
+        }
       }
     },
     "error": {
       "required_entity": "此實體為必要項目。",
       "invalid_entity": "請選擇這台裝置目前可用的 ESPHome 實體。",
-      "duplicate_entity": "同一個實體不能同時提供兩項功能。"
+      "duplicate_entity": "同一個實體不能同時提供兩項功能。",
+      "invalid_mode_names": "請為每個模式輸入文字名稱。",
+      "duplicate_mode_names": "模式名稱不可重複，請為每個模式使用不同名稱。",
+      "mode_options_changed": "裝置的模式選項已變更，請重新確認名稱。"
     },
     "abort": {
       "device_unavailable": "選取的 ESPHome 裝置目前無法使用。"

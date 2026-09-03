@@ -14,6 +14,8 @@ from homeassistant.helpers import device_registry as dr, entity_registry as er, 
 from .bindings import effective_data, resolve_sources, serialize_sources, validate_sources
 from .const import (
     CONF_DEVICE_ID,
+    CONF_MODE,
+    CONF_MODE_NAMES,
     DOMAIN,
     ESPHOME_DOMAIN,
     NAME,
@@ -28,6 +30,7 @@ from .discovery import (
     eligible_devices,
     role_candidates,
 )
+from .modes import mode_names_schema, source_mode_names, submitted_mode_names
 
 
 @callback
@@ -159,30 +162,42 @@ class ESPHomeDehumidifierConfigFlow(ConfigFlow, domain=DOMAIN):
         )
 
     async def async_step_confirm(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        """Review detection, then create one humidifier without extra selections."""
+        """Review detection and optionally edit the selected source's mode names."""
         assert self._device_id is not None
         device = dr.async_get(self.hass).async_get(self._device_id)
         if device is None or device.disabled_by is not None or not device_is_esphome(self.hass, device):
             return self.async_abort(reason="device_unavailable")
+        data = serialize_sources(self.hass, self._device_id, self._selected)
+        names = source_mode_names(self.hass, data)
+        errors: dict[str, str] = {}
         if user_input is not None:
             self._abort_if_unique_id_configured()
             errors = validate_sources(self.hass, self._device_id, self._selected)
             if errors:
                 self._manual_roles = tuple(errors)
                 return await self.async_step_manual()
-            return self.async_create_entry(
-                title=device.name_by_user or device.name or NAME,
-                data=serialize_sources(self.hass, self._device_id, self._selected),
-            )
+            if names:
+                submitted, errors = submitted_mode_names(names, user_input)
+                if submitted:
+                    names = submitted
+            if not errors:
+                return self.async_create_entry(
+                    title=device.name_by_user or device.name or NAME,
+                    data=data | {CONF_MODE_NAMES: names},
+                )
         return self.async_show_form(
             step_id="confirm",
-            data_schema=vol.Schema({}),
+            data_schema=mode_names_schema(names),
+            errors=errors,
             description_placeholders=_summary(self.hass, self._selected),
         )
 
 
 class ESPHomeDehumidifierOptionsFlow(OptionsFlowWithReload):
     """Correct any source mapping and automatically reload the integration."""
+
+    def __init__(self) -> None:
+        self._pending_data: dict[str, Any] | None = None
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         data = effective_data(self.config_entry)
@@ -193,18 +208,54 @@ class ESPHomeDehumidifierOptionsFlow(OptionsFlowWithReload):
         selected = resolve_sources(self.hass, data)
         errors: dict[str, str] = {}
         if user_input is not None:
+            previous_mode = selected.get(CONF_MODE)
             # Omitted optional fields explicitly disable those bindings.
             selected = {role: user_input.get(role) or None for role in ROLES}
             errors = validate_sources(self.hass, device_id, selected)
             if not errors:
-                return self.async_create_entry(
-                    data=serialize_sources(self.hass, device_id, selected)
+                self._pending_data = serialize_sources(self.hass, device_id, selected)
+                # Keep names across a rename, but not when choosing another select.
+                self._pending_data[CONF_MODE_NAMES] = (
+                    data.get(CONF_MODE_NAMES, {})
+                    if selected.get(CONF_MODE) and selected[CONF_MODE] == previous_mode
+                    else {}
                 )
+                return await self.async_step_mode_names()
         return self.async_show_form(
             step_id="init",
             data_schema=self.add_suggested_values_to_schema(
                 _entity_schema(self.hass, device_id, ROLES),
                 {key: value for key, value in selected.items() if value is not None},
             ),
+            errors=errors,
+        )
+
+    async def async_step_mode_names(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Extract editable fields only when the selected mode has options."""
+        assert self._pending_data is not None
+        data = self._pending_data
+        device_id = data[CONF_DEVICE_ID]
+        device = dr.async_get(self.hass).async_get(device_id)
+        if device is None or device.disabled_by is not None or not device_is_esphome(self.hass, device):
+            return self.async_abort(reason="device_unavailable")
+        selected = resolve_sources(self.hass, data)
+        if validate_sources(self.hass, device_id, selected):
+            return await self.async_step_init(selected)
+        names = source_mode_names(self.hass, data)
+        if not names:
+            # Offline optional sources must not block saving power/humidity changes.
+            return self.async_create_entry(data=data)
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            submitted, errors = submitted_mode_names(names, user_input)
+            if not errors:
+                return self.async_create_entry(data=data | {CONF_MODE_NAMES: submitted})
+            if submitted:
+                names = submitted
+        return self.async_show_form(
+            step_id="mode_names",
+            data_schema=mode_names_schema(names),
             errors=errors,
         )
