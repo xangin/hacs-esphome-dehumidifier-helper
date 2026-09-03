@@ -22,12 +22,12 @@
       },
       "confirm": {
         "title": "Detected entities",
-        "description": "Power: {power_entity_id}\nCurrent humidity: {humidity_entity_id}\nTarget humidity: {target_humidity_entity_id}\nOperation mode: {mode_entity_id}\nFan speed: {fan_entity_id}\n\nSelect Submit to finish.\n“—” means not used. Fan speed remains a separate ESPHome control.",
+        "description": "Power: {power_entity_id}\nCurrent humidity: {humidity_entity_id}\nTarget humidity: {target_humidity_entity_id}\nOperation mode: {mode_entity_id}\nFan speed: {fan_entity_id}\n\nSelect Submit to finish.\n“—” means not used. Fan speed remains a separate ESPHome control.\n\nIf mode name fields are shown below, customize how they appear in the dehumidifier interface. Blank names use the original mode name. Each name must be unique.",
         "data": {
-          "mode_names": "Mode display names"
+          "mode_names": "Operation mode display names"
         },
         "data_description": {
-          "mode_names": "Each field represents an original device mode. Enter the name to display, or leave it blank to use the original name. Names must be unique."
+          "mode_names": "Customize how operation mode names appear in the dehumidifier interface. Leave a name blank to use the original mode name. Each name must be unique."
         }
       }
     },
@@ -59,10 +59,13 @@
         }
       },
       "mode_names": {
-        "title": "Customize mode names",
-        "description": "Each field represents an original device mode. Enter the name to display, or leave it blank to use the original name. Names must be unique.",
+        "title": "Customize operation mode names",
+        "description": "Customize how operation mode names appear in the dehumidifier interface. Leave a name blank to use the original mode name. Each name must be unique.",
         "data": {
-          "mode_names": "Mode display names"
+          "mode_names": "Operation mode display names"
+        },
+        "data_description": {
+          "mode_names": "Customize how operation mode names appear in the dehumidifier interface. Leave a name blank to use the original mode name. Each name must be unique."
         }
       }
     },

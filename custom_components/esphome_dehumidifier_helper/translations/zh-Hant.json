@@ -22,12 +22,12 @@
       },
       "confirm": {
         "title": "已偵測到以下實體",
-        "description": "電源：{power_entity_id}\n目前濕度：{humidity_entity_id}\n設定濕度：{target_humidity_entity_id}\n運轉模式：{mode_entity_id}\n風量：{fan_entity_id}\n\n請按「提交」完成設定。\n「—」表示此項功能未使用。風量會保留原本的控制實體。",
+        "description": "電源：{power_entity_id}\n目前濕度：{humidity_entity_id}\n設定濕度：{target_humidity_entity_id}\n運轉模式：{mode_entity_id}\n風量：{fan_entity_id}\n\n請按「提交」完成設定。\n「—」表示此項功能未使用。風量會保留原本的控制實體。\n\n若下方有模式名稱欄位，可自訂它們在除濕機介面中顯示的名稱。留空會使用原始模式名稱，各模式名稱不可重複。",
         "data": {
-          "mode_names": "模式顯示名稱"
+          "mode_names": "運轉模式顯示名稱"
         },
         "data_description": {
-          "mode_names": "每個欄位代表裝置的一個原始模式，可輸入想顯示的名稱。留空會使用原始名稱，各模式名稱不可重複。"
+          "mode_names": "自訂各運轉模式在除濕機介面中顯示的名稱。留空會使用原始模式名稱，各模式名稱不可重複。"
         }
       }
     },
@@ -60,9 +60,12 @@
       },
       "mode_names": {
         "title": "自訂運轉模式名稱",
-        "description": "每個欄位代表裝置的一個原始模式，可輸入想顯示的名稱。留空會使用原始名稱，各模式名稱不可重複。",
+        "description": "自訂各運轉模式在除濕機介面中顯示的名稱。留空會使用原始模式名稱，各模式名稱不可重複。",
         "data": {
-          "mode_names": "模式顯示名稱"
+          "mode_names": "運轉模式顯示名稱"
+        },
+        "data_description": {
+          "mode_names": "自訂各運轉模式在除濕機介面中顯示的名稱。留空會使用原始模式名稱，各模式名稱不可重複。"
         }
       }
     },
