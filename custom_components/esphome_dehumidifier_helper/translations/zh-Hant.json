@@ -1,0 +1,81 @@
+{
+  "title": "ESPHome 除濕機助手",
+  "config": {
+    "step": {
+      "user": {
+        "title": "選擇 ESPHome 除濕機",
+        "description": "請選擇已加入 Home Assistant 的 ESPHome 除濕機，將它的控制與感測實體整合成標準除濕機。",
+        "data": {
+          "device_id": "ESPHome 除濕機"
+        }
+      },
+      "manual": {
+        "title": "無法自動辨識，請手動選擇",
+        "description": "只需選擇無法自動辨識的實體。\n\n電源：{power_entity_id}\n目前濕度：{humidity_entity_id}\n設定濕度：{target_humidity_entity_id}\n運轉模式：{mode_entity_id}\n風量：{fan_entity_id}\n\n模式與風量可留空；「—」表示未使用。",
+        "data": {
+          "power_entity_id": "電源",
+          "humidity_entity_id": "目前濕度",
+          "target_humidity_entity_id": "設定濕度",
+          "mode_entity_id": "運轉模式",
+          "fan_entity_id": "風量"
+        }
+      },
+      "confirm": {
+        "title": "已偵測到以下實體",
+        "description": "電源：{power_entity_id}\n目前濕度：{humidity_entity_id}\n設定濕度：{target_humidity_entity_id}\n運轉模式：{mode_entity_id}\n風量：{fan_entity_id}\n\n請按「提交」完成設定。\n「—」表示此項功能未使用。風量會保留原本的控制實體。",
+        "data": {}
+      }
+    },
+    "error": {
+      "required_entity": "此實體為必要項目。",
+      "invalid_entity": "請選擇這台裝置目前可用的 ESPHome 實體。",
+      "duplicate_entity": "同一個實體不能同時提供兩項功能。"
+    },
+    "abort": {
+      "already_configured": "這台 ESPHome 除濕機已經加入。",
+      "device_unavailable": "選取的 ESPHome 裝置目前無法使用。",
+      "no_devices": "找不到尚未加入的 ESPHome 除濕機。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "實體對應",
+        "description": "可在此修正錯誤的實體對應。選填欄位留空會停用該功能。",
+        "data": {
+          "power_entity_id": "電源",
+          "humidity_entity_id": "目前濕度",
+          "target_humidity_entity_id": "設定濕度",
+          "mode_entity_id": "運轉模式（選填）",
+          "fan_entity_id": "風量（選填）"
+        }
+      }
+    },
+    "error": {
+      "required_entity": "此實體為必要項目。",
+      "invalid_entity": "請選擇這台裝置目前可用的 ESPHome 實體。",
+      "duplicate_entity": "同一個實體不能同時提供兩項功能。"
+    },
+    "abort": {
+      "device_unavailable": "選取的 ESPHome 裝置目前無法使用。"
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "dehumidifier": {
+        "name": "除濕機"
+      }
+    }
+  },
+  "exceptions": {
+    "source_unavailable": {
+      "message": "連結的 ESPHome 實體目前無法使用。"
+    },
+    "invalid_humidity": {
+      "message": "濕度必須介於 {min}% 至 {max}% 之間，並以 {step}% 為間隔。"
+    },
+    "invalid_mode": {
+      "message": "連結的 ESPHome 選單目前沒有這個模式。"
+    }
+  }
+}

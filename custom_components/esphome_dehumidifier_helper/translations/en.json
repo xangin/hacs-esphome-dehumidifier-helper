@@ -1,0 +1,81 @@
+{
+  "title": "ESPHome Dehumidifier Helper",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Select an ESPHome dehumidifier",
+        "description": "Select an ESPHome dehumidifier already added to Home Assistant to combine its controls and sensors into one standard dehumidifier entity.",
+        "data": {
+          "device_id": "ESPHome dehumidifier"
+        }
+      },
+      "manual": {
+        "title": "Some entities could not be detected",
+        "description": "Please select only the entities that could not be detected automatically.\n\nPower: {power_entity_id}\nCurrent humidity: {humidity_entity_id}\nTarget humidity: {target_humidity_entity_id}\nOperation mode: {mode_entity_id}\nFan speed: {fan_entity_id}\n\nMode and fan speed may be left empty; “—” means not used.",
+        "data": {
+          "power_entity_id": "Power",
+          "humidity_entity_id": "Current humidity",
+          "target_humidity_entity_id": "Target humidity",
+          "mode_entity_id": "Operation mode",
+          "fan_entity_id": "Fan speed"
+        }
+      },
+      "confirm": {
+        "title": "Detected entities",
+        "description": "Power: {power_entity_id}\nCurrent humidity: {humidity_entity_id}\nTarget humidity: {target_humidity_entity_id}\nOperation mode: {mode_entity_id}\nFan speed: {fan_entity_id}\n\nSelect Submit to finish.\n“—” means not used. Fan speed remains a separate ESPHome control.",
+        "data": {}
+      }
+    },
+    "error": {
+      "required_entity": "This entity is required.",
+      "invalid_entity": "Select an available ESPHome entity on this device.",
+      "duplicate_entity": "One entity cannot provide two functions."
+    },
+    "abort": {
+      "already_configured": "This ESPHome dehumidifier is already configured.",
+      "device_unavailable": "The selected ESPHome device is no longer available.",
+      "no_devices": "No unconfigured ESPHome dehumidifier was found."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Entity mapping",
+        "description": "Change an incorrect entity mapping. Leave an optional field empty to disable that feature.",
+        "data": {
+          "power_entity_id": "Power",
+          "humidity_entity_id": "Current humidity",
+          "target_humidity_entity_id": "Target humidity",
+          "mode_entity_id": "Operation mode (optional)",
+          "fan_entity_id": "Fan speed (optional)"
+        }
+      }
+    },
+    "error": {
+      "required_entity": "This entity is required.",
+      "invalid_entity": "Select an available ESPHome entity on this device.",
+      "duplicate_entity": "One entity cannot provide two functions."
+    },
+    "abort": {
+      "device_unavailable": "The selected ESPHome device is no longer available."
+    }
+  },
+  "entity": {
+    "humidifier": {
+      "dehumidifier": {
+        "name": "Dehumidifier"
+      }
+    }
+  },
+  "exceptions": {
+    "source_unavailable": {
+      "message": "The linked ESPHome entity is unavailable."
+    },
+    "invalid_humidity": {
+      "message": "Choose a humidity from {min}% to {max}% in increments of {step}%."
+    },
+    "invalid_mode": {
+      "message": "This mode is not currently offered by the linked ESPHome select."
+    }
+  }
+}

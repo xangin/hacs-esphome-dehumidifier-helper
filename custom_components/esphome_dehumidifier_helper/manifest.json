@@ -1,0 +1,17 @@
+{
+  "domain": "esphome_dehumidifier_helper",
+  "name": "ESPHome Dehumidifier Helper",
+  "codeowners": [
+    "@xangin"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "esphome"
+  ],
+  "documentation": "https://github.com/xangin/hacs-esphome-dehumidifier-helper",
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/xangin/hacs-esphome-dehumidifier-helper/issues",
+  "requirements": [],
+  "version": "1.1.0"
+}
