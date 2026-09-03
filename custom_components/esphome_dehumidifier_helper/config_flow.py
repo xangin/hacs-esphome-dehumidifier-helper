@@ -122,7 +122,7 @@ class ESPHomeDehumidifierConfigFlow(ConfigFlow, domain=DOMAIN):
         ]
         if not choices:
             return self.async_abort(reason="no_devices")
-        # DeviceSelector has no include_devices allow-list in HA 2026.8.3.
+        # DeviceSelector has no include_devices allow-list in HA 2026.6.0.
         # SelectSelector provides the requested precise device dropdown.
         return self.async_show_form(
             step_id="user",

@@ -39,7 +39,7 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 
 ## 相容條件
 
-目標版本：**Home Assistant 2026.8.0 以上**。已核對的 API 基準為 Core 2026.8.3；實際測試範圍見 [驗證紀錄](VALIDATION.md)。
+最低需求：**Home Assistant Core 2026.6.0 以上**。已依 [2026.6.0 官方原始碼](https://github.com/home-assistant/core/blob/2026.6.0/homeassistant/components/humidifier/__init__.py) 核對 Humidifier、濕度步進、Config Flow、Options Flow、Registry 與事件追蹤 API。
 
 同一台 ESPHome 裝置下，至少要有三個已啟用、可用的實體：
 
@@ -127,37 +127,25 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 - 裝置清單依 ESPHome 實體結構篩選，可能包含結構相似的其他設備；請選擇實際的除濕機。
 - HA Device Registry 沒有公開的完整 ESPHome project name 欄位，已知 project 只能透過公開 metadata 作為提示。
 - 目前沒有可靠的壓縮機活動來源，因此不提供 `drying` 等 action，也不根據濕度差猜測是否正在除濕。
-- 濕度 min/max/step 優先取自來源 number；缺少或無效時，範圍 fallback 為 40–80%。HA 2026.8.3 的標準設定濕度服務仍使用整數；需要小數目標時請操作原 number。
+- 濕度 min/max/step 優先取自來源 number；缺少或無效時，範圍 fallback 為 40–80%。HA 2026.6.0 的標準設定濕度服務仍使用整數；需要小數目標時請操作原 number。
 - 模式單獨失聯時，基本電源與濕度控制仍可使用；主要來源失聯或濕度值無效時，整個 humidifier 會顯示無法使用。
 - 刪除整個 ESPHome 裝置後再加入，device_id 可能改變，需要重新建立助手設定。單純實體改名不受此限制。
 
-## 專案與開發
+## 專案資訊
 
 | 項目 | 值 |
 | --- | --- |
 | GitHub repository | `xangin/hacs-esphome-dehumidifier-helper` |
 | 整合名稱 | ESPHome Dehumidifier Helper |
 | HA domain | `esphome_dehumidifier_helper` |
-| 目前版本 | `1.1.0` |
-| 本機專案資料夾 | `hacs-esphome-dehumidifier-helper` |
+| 目前版本 | `1.1.1` |
+| 最低 Home Assistant Core | `2026.6.0` |
 
-Repository 根目錄應直接包含 `custom_components/`、`hacs.json` 和本 README。本機資料夾可以使用不同名稱，不影響 HACS 或 HA 載入。
+### 找不到裝置或無法完成設定？
 
-在專案根目錄執行以下命令，可做本機檢查及產生安裝包；不需要 ESPHome 或 Home Assistant 測試環境：
+先確認 ESPHome 裝置已加入 HA，且電源 switch、濕度 sensor、設定濕度 number 都已啟用。來源名稱不同時可以手動指定；必要來源不存在時，需先讓 firmware 提供對應的實體。
 
-```sh
-python3.14 -m compileall -q custom_components
-python3.14 scripts/validate.py
-python3.14 -m unittest discover -s tests -v
-python3.14 scripts/package.py
-```
-
-安裝包輸出為 `dist/esphome_dehumidifier_helper-1.1.0.zip`，並附上 SHA-256 校驗檔。離線測試不能取代 Home Assistant GUI、服務與實機驗收。
-
-- [實作與相容性說明](docs/IMPLEMENTATION.md)：辨識優先順序、Registry 綁定、實體行為及 API 參考。
-- [驗證紀錄](VALIDATION.md)：檢查範圍與實際 HA 驗收步驟。
-- [版本紀錄](CHANGELOG.md)
-- [回報問題](https://github.com/xangin/hacs-esphome-dehumidifier-helper/issues)：請提供 HA 版本、助手版本、來源實體類型與錯誤日誌。
+若仍有問題，請至 [Issues](https://github.com/xangin/hacs-esphome-dehumidifier-helper/issues) 提供 HA 版本、助手版本、來源實體類型及相關錯誤日誌。
 
 ## 授權
 

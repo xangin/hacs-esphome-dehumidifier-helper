@@ -5,3 +5,11 @@ __pycache__/
 .venv/
 dist/
 .DS_Store
+
+# Local development material; not part of the public integration repository.
+/tests/
+/scripts/
+/docs/
+/VALIDATION.md
+/CHANGELOG.md
+/pyproject.toml
