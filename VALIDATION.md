@@ -2,22 +2,23 @@
 
 日期：2026-09-03。整合版本：1.1.0。官方 API 基準：Home Assistant Core 2026.8.3。
 
-依 Simon 指示，完成本機檢查，實際 HA 安裝與硬體驗收由 Simon 執行。沒有安裝 HA 測試套件、沒有寫入連線中的 HA、沒有控制實際除濕機，也沒有執行或更動 ESPHome 環境。
+依 Simon 指示，完成本機檢查，實際 HA 安裝與硬體驗收由 Simon 執行。本機沒有安裝 HA 測試套件、沒有寫入連線中的 HA、沒有控制實際除濕機，也沒有執行或更動 ESPHome 環境。
 
 ## 已執行
 
 | 項目 | 結果與範圍 |
 | --- | --- |
 | Python syntax / compile | Python 3.14.6；compileall 及逐檔 compile 成功。 |
-| manifest 格式 | JSON 可解析；必要欄位、型別、domain/目錄/常數一致性、版本、dependencies、config_flow、integration_type、iot_class 檢查成功。URL 格式檢查成功，不代表預定 repository 已發布。 |
+| manifest 格式 | JSON 可解析；必要欄位、型別、domain/目錄/常數一致性、版本、dependencies、config_flow、integration_type、iot_class 檢查成功。Documentation、issue tracker 與實際 GitHub repository 一致。 |
 | HACS 靜態格式 | 單一 custom_components 子目錄、hacs.json、最低 HA 版本與本地 256×256 PNG 通過。 |
 | 翻譯 | strings、en、zh-Hant 的 key 與 placeholders 一致；JSON 全部可解析。 |
 | 離線邏輯檢查 | `python3.14 -m unittest discover -s tests -v`：21 項通過。採記憶體 Registry doubles，未模擬完整 HA。 |
 | 舊 API 搜尋 | 元件 Python 原始碼未使用舊 async_track_state_change、單數 async_forward_entry_setup、SUPPORT_MODES、DEVICE_CLASS_DEHUMIDIFIER、async_setup_platform、SCAN_INTERVAL、update_interval，或指派 OptionsFlow.config_entry。 |
 | 身分查找檢查 | 無 entity_id 名稱／拼音／MAC suffix 推測；entity_id 只用於從 HA 讀 state、服務目標、顯示和 Registry 事件。 |
+| 官方 hassfest／HACS | GitHub Actions 兩項均通過；未以離線檢查取代官方驗證。 |
 | 安裝包 | package.py 逐一比對 ZIP 成員與原始檔 bytes，並產生整包 SHA-256。 |
 
-離線檢查不等於官方 hassfest 通過。本次未執行官方 hassfest、HACS 遠端 action、HA 平台載入或 GUI 互動；已提供 GitHub workflow，發布 repository 後可執行。
+本機離線檢查之外，已在 [GitHub Actions](https://github.com/xangin/hacs-esphome-dehumidifier-helper/actions/runs/33727810138) 通過官方 hassfest、HACS action 與 offline 三項工作。HA 平台載入、GUI 互動與硬體功能仍待實際驗收。
 
 ## 1.1.0 命名與文件檢查
 

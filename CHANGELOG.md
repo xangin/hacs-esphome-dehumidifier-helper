@@ -8,6 +8,8 @@
 - 明確定位為可共用於不同品牌的 ESPHome 除濕機實體助手。
 - 保留日立 ST01 名稱別名與既有 firmware project 提示，改用可擴充的已知 project 清單。
 - 更新 GUI、HACS／manifest metadata、打包與檢查腳本。
+- 以 xangin 帳號發布至 GitHub，保留既有 MIT 授權；通過官方 hassfest 與 HACS 驗證。
+- CI 更新至官方 checkout 7.0.1 與 setup-python 7.0.0。
 - 重寫公開 README，介紹功能、相容條件、首次安裝與 GUI 使用方式；詳細設計移至 `docs/IMPLEMENTATION.md`。
 
 ## 1.0.0 — 2026-09-02
