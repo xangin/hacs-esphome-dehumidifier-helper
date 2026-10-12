@@ -78,7 +78,7 @@ def _summary(hass: HomeAssistant, selected: Mapping[str, Any]) -> dict[str, str]
 class ESPHomeDehumidifierConfigFlow(ConfigFlow, domain=DOMAIN):
     """One config entry per source device, with no YAML configuration."""
 
-    VERSION = 1
+    VERSION = 2
 
     def __init__(self) -> None:
         self._device_id: str | None = None

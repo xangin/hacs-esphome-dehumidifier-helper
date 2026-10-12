@@ -133,6 +133,8 @@ ESPHome `fan` 元件將這類運轉選項稱為 `preset_modes`。本助手實際
 
 已知日立 firmware metadata，或模式選項包含完整的 `eco`、`normal`、`boost`、`home` 四個核心值時，會套用這組預填名稱。助手只顯示來源 select 實際提供的選項：支援 `sleep` 的機型會顯示「防霉防蟎」，支援 `purifier` 的機型會顯示「空氣清淨」，不會把機型沒有的模式自行加入。其他裝置預填原始模式名稱，也能逐項自訂；新增的其他模式同樣會列出。
 
+從 1.2.1 或更早版本直接更新時，助手會把尚未自訂的 `sleep`、`purifier` 原始名稱一次性更新為上述中文預設；使用者已經修改過的名稱不會被覆寫。
+
 日後要修改名稱：
 
 1. 開啟 **設定 → 裝置與服務 → ESPHome Dehumidifier Helper → 該裝置的設定／選項**。
@@ -172,7 +174,7 @@ ESPHome `fan` 元件將這類運轉選項稱為 `preset_modes`。本助手實際
 | GitHub repository | `xangin/hacs-esphome-dehumidifier-helper` |
 | 整合名稱 | ESPHome Dehumidifier Helper |
 | HA domain | `esphome_dehumidifier_helper` |
-| 目前版本 | `1.2.2` |
+| 目前版本 | `1.2.3` |
 | 最低 Home Assistant Core | `2026.6.0` |
 
 ### 找不到裝置或無法完成設定？
