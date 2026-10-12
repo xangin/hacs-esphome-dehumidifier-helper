@@ -37,10 +37,23 @@ class Detection:
 @callback
 def device_is_esphome(hass: HomeAssistant, device: dr.DeviceEntry) -> bool:
     """Confirm ownership, independent of the device's display name."""
+    # config_entry_id replaced the multi-entry compatibility property in Core
+    # 2026.8. Keep the fallback so the declared 2026.6 minimum still works; it
+    # is never read on versions where config_entries is deprecated.
+    if hasattr(device, "config_entry_id"):
+        entry_id = device.config_entry_id
+        entry = (
+            hass.config_entries.async_get_entry(entry_id)
+            if entry_id is not None
+            else None
+        )
+        return entry is not None and entry.domain == ESPHOME_DOMAIN
+
+    legacy_entry_ids = getattr(device, "config_entries", ())
     return any(
         (entry := hass.config_entries.async_get_entry(entry_id)) is not None
         and entry.domain == ESPHOME_DOMAIN
-        for entry_id in device.config_entries
+        for entry_id in legacy_entry_ids
     )
 
 

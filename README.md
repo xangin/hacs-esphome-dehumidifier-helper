@@ -114,9 +114,11 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 
 來源 entity_id 或顯示名稱變更時，助手會透過保存的 Registry 身分重新追蹤，通常不需重新設定。
 
-### 自訂運轉模式名稱
+### 自訂運轉模式（preset mode）名稱
 
 有選擇「運轉模式」實體時，助手會讀取該實體的所有模式選項，為每個選項產生一個名稱欄位。例如原始值為 `eco`，欄位標示 `eco`，內容可填「舒適節電」或你喜歡的名稱，不需要編寫 YAML。
+
+ESPHome `fan` 元件將這類運轉選項稱為 `preset_modes`。本助手實際讀取同一裝置的「運轉模式」select，再將選項顯示為 Home Assistant Humidifier 的 modes。這些 preset mode 是除濕機的運轉程式，與高、中、低等風量選擇是不同功能。
 
 日立預設對應如下：
 
@@ -126,8 +128,10 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 | `normal` | 自訂濕度 |
 | `boost` | 快速乾衣 |
 | `home` | 低濕乾燥 |
+| `sleep` | 防霉防蟎 |
+| `purifier` | 空氣清淨 |
 
-已知日立 firmware metadata，或模式選項包含完整的 `eco`、`normal`、`boost`、`home` 四個值時，會套用這組預填名稱。其他裝置預填原始模式名稱，也能逐項自訂；新增的其他模式同樣會列出。
+已知日立 firmware metadata，或模式選項包含完整的 `eco`、`normal`、`boost`、`home` 四個核心值時，會套用這組預填名稱。助手只顯示來源 select 實際提供的選項：支援 `sleep` 的機型會顯示「防霉防蟎」，支援 `purifier` 的機型會顯示「空氣清淨」，不會把機型沒有的模式自行加入。其他裝置預填原始模式名稱，也能逐項自訂；新增的其他模式同樣會列出。
 
 日後要修改名稱：
 
@@ -168,7 +172,7 @@ ESPHome 除濕機接入 Home Assistant 後，電源、濕度、設定濕度和�
 | GitHub repository | `xangin/hacs-esphome-dehumidifier-helper` |
 | 整合名稱 | ESPHome Dehumidifier Helper |
 | HA domain | `esphome_dehumidifier_helper` |
-| 目前版本 | `1.2.1` |
+| 目前版本 | `1.2.2` |
 | 最低 Home Assistant Core | `2026.6.0` |
 
 ### 找不到裝置或無法完成設定？

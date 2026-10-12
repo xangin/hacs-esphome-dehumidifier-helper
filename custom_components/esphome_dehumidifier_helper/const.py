@@ -45,10 +45,16 @@ ROLE_NAMES: Final = {
 FALLBACK_MIN_HUMIDITY: Final = 40.0
 FALLBACK_MAX_HUMIDITY: Final = 80.0
 
-# Applied to known Hitachi firmware, or a select offering all four ST01 modes.
+# The four values shared by the original ST01 variants are sufficient to
+# recognize the mode family. Individual variants can expose extra modes.
+HITACHI_MODE_SIGNATURE: Final = frozenset(("eco", "normal", "boost", "home"))
+
+# Applied to known Hitachi firmware, or a select offering the ST01 signature.
 HITACHI_MODE_NAMES: Final = {
     "eco": "舒適節電",
     "normal": "自訂濕度",
     "boost": "快速乾衣",
     "home": "低濕乾燥",
+    "sleep": "防霉防蟎",
+    "purifier": "空氣清淨",
 }

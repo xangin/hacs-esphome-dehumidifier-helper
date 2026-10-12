@@ -11,7 +11,13 @@ from homeassistant.core import HomeAssistant, State, callback
 from homeassistant.helpers import device_registry as dr, selector
 
 from .bindings import resolve_sources
-from .const import CONF_DEVICE_ID, CONF_MODE, CONF_MODE_NAMES, HITACHI_MODE_NAMES
+from .const import (
+    CONF_DEVICE_ID,
+    CONF_MODE,
+    CONF_MODE_NAMES,
+    HITACHI_MODE_NAMES,
+    HITACHI_MODE_SIGNATURE,
+)
 from .discovery import project_hint
 
 
@@ -27,7 +33,11 @@ def suggested_mode_names(
     options: Sequence[str], saved: Mapping[str, str], *, hitachi: bool = False
 ) -> dict[str, str]:
     """Prefer saved names; generic devices otherwise keep their own options."""
-    defaults = HITACHI_MODE_NAMES if hitachi or HITACHI_MODE_NAMES.keys() <= set(options) else {}
+    defaults = (
+        HITACHI_MODE_NAMES
+        if hitachi or HITACHI_MODE_SIGNATURE <= set(options)
+        else {}
+    )
     return {
         option: saved.get(option, defaults.get(option, option)).strip() or option
         for option in options
